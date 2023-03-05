@@ -1,15 +1,18 @@
 const {
   listContactsData,
-  // getContactDataById,
-  // removeContactData,
-  // addContactData,
-  // updateContactData,
+  getContactDataById,
+  removeContactData,
+  addContactData,
+  updateContactData,
 } = require('../models/contacts');
+
+const {
+  addContactSchema,
+  updateContactSchema,
+} = require('../middlewars/schema/schema');
 
 const listContacts = async (req, res, next) => {
   const contactsData = await listContactsData();
-
-  console.log(contactsData);
 
   if (!contactsData) {
     return res
@@ -21,19 +24,78 @@ const listContacts = async (req, res, next) => {
 };
 
 async function getContactById(req, res, next) {
-  res.json({ message: 'template message' });
+  const { contactId } = req.params;
+  const contact = await getContactDataById(contactId);
+
+  if (!contact)
+    return res.status(404).json({
+      message: `Contact with ID ${contactId} did not found`,
+    });
+
+  res.status(200).json(contact);
 }
 
 async function addContact(req, res, next) {
-  res.json({ message: 'template message' });
+  try {
+    const { error } = addContactSchema.validate(req.body);
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const newContactData = await addContactData(req.body);
+
+    res.status(201).json({
+      message: 'Contact has created',
+      newContactData,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function removeContact(req, res, next) {
-  res.json({ message: 'template message' });
+  const { contactId } = req.params;
+  const contact = await removeContactData(contactId);
+
+  if (contact.error === 'notFound') {
+    return res.status(404).json({
+      message: `Contact with ID ${contactId} did not found`,
+    });
+  }
+
+  res.status(200).json({
+    message: 'contact has deleted',
+    contact,
+  });
 }
 
 async function updateContact(req, res, next) {
-  res.json({ message: 'template message' });
+  const {
+    body,
+    params: { contactId },
+  } = req;
+
+  try {
+    const { error } = updateContactSchema.validate(body);
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const contact = await updateContactData(contactId, body);
+
+    if (contact.error === 'notFound') {
+      return res.status(404).json({
+        message: `Contact with ID ${contactId} did not found`,
+      });
+    }
+
+    res.status(200).json({
+      message: 'contact has updated',
+      contact,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
 module.exports = {
