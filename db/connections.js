@@ -1,13 +1,23 @@
 const mongoose = require('mongoose');
 
-async function connectMongo() {
-  // await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');
+async function connectMongo(connectionUrl) {
+  if (!connectionUrl) {
+    console.error('Please check database connection ULR');
+    process.exit(1);
+  }
 
-  await mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  });
+  try {
+    mongoose.set('strictQuery', false);
+    await mongoose.connect(connectionUrl, {
+      useNewUrlParser: true,
+      // useCreateIndex: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Database connection successful');
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 }
 
 module.exports = connectMongo;
