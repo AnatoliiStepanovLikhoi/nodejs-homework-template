@@ -7,11 +7,13 @@ const {
   addContact,
   removeContact,
   updateContact,
+  updateStatusContact,
 } = require('../../controllers/contacts');
 
 const {
   addContactValidation,
   updateContactValidation,
+  updateContactStatusValidation,
 } = require('../../middlewars/validationMiddlewars/validation');
 
 const asyncWrapper = require('../../helpers/asyncWrapper');
@@ -21,5 +23,10 @@ router.get('/:contactId', asyncWrapper(getContactById));
 router.post('/', addContactValidation, asyncWrapper(addContact));
 router.delete('/:contactId', asyncWrapper(removeContact));
 router.put('/:contactId', updateContactValidation, asyncWrapper(updateContact));
+router.patch(
+  '/:contactId/favorite',
+  updateContactStatusValidation,
+  asyncWrapper(updateStatusContact)
+);
 
 module.exports = router;

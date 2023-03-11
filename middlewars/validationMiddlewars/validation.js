@@ -1,4 +1,8 @@
-const { addContactSchema, updateContactSchema } = require('../schema/schema');
+const {
+  addContactSchema,
+  updateContactSchema,
+  updateContactStatusSchema,
+} = require('../schema/schema');
 
 const addContactValidation = (req, res, next) => {
   const validationResult = addContactSchema.validate(req.body);
@@ -24,4 +28,18 @@ const updateContactValidation = (req, res, next) => {
   next();
 };
 
-module.exports = { addContactValidation, updateContactValidation };
+const updateContactStatusValidation = (req, res, next) => {
+  const validationResult = updateContactStatusSchema.validate(req.body);
+
+  if (validationResult.error) {
+    return res.status(400).json({ message: `missing field` });
+  }
+
+  next();
+};
+
+module.exports = {
+  addContactValidation,
+  updateContactValidation,
+  updateContactStatusValidation,
+};
