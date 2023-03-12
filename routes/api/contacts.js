@@ -14,7 +14,7 @@ const {
   addContactValidation,
   updateContactValidation,
   updateContactStatusValidation,
-} = require('../../middlewars/validationMiddlewars/validation');
+} = require('../../middlewars/joiValidation/validation');
 
 const asyncWrapper = require('../../helpers/asyncWrapper');
 

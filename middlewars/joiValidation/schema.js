@@ -9,7 +9,7 @@ const addContactSchema = joi.object({
 
 const updateContactSchema = joi
   .object({
-    name: joi.string().trim().alphanum().min(2).max(30),
+    name: joi.string().trim().min(2).max(30),
     email: joi.string().email(),
     phone: joi.string().trim().min(7).max(15),
     favorite: joi.boolean(),
