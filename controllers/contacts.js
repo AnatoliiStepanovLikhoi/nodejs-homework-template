@@ -1,5 +1,5 @@
 const Contact = require('../models/contactsSchema');
-const validObjId = require('../middlewars/idValidation');
+const { validObjId } = require('../middlewars/idValidation');
 
 const AppError = require('../helpers/appError');
 

@@ -10,10 +10,10 @@ const contactsSchema = new Schema(
     },
     email: {
       type: String,
+      unique: true,
       minlength: 2,
       maxlength: 30,
       required: [true, 'Set email for contact'],
-      unique: true,
     },
     phone: {
       type: String,
