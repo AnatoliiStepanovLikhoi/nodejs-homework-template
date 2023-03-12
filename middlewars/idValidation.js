@@ -1,19 +1,22 @@
-const { isValidObjectId } = require('mongoose');
 const AppError = require('../helpers/appError');
 const { addContactSchema } = require('./joiValidation/schema');
 const Contact = require('../models/contactsSchema');
+const {
+  Types: { ObjectId },
+} = require('mongoose');
 
-function validObjId(req, res, next) {
+async function validObjId(req, _, next) {
   const { contactId } = req.params;
 
-  if (!isValidObjectId(contactId)) {
-    const error = new AppError(
-      400,
-      `Contact with ID ${contactId} is not found`
-    );
-
-    next(error);
+  if (!ObjectId.isValid(contactId)) {
+    return next(new AppError(404, 'Not found'));
   }
+
+  const contactExists = await Contact.exists({ _id: contactId });
+
+  if (!contactExists) return next(new AppError(404, 'Not found'));
+
+  next();
 }
 
 async function checkUserData(req, res, next) {
