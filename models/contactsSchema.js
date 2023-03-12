@@ -4,13 +4,20 @@ const contactsSchema = new Schema(
   {
     name: {
       type: String,
+      minlength: 2,
+      maxlength: 30,
       required: [true, 'Set name for contact'],
     },
     email: {
       type: String,
+      minlength: 2,
+      maxlength: 30,
+      required: [true, 'Set email for contact'],
+      unique: true,
     },
     phone: {
       type: String,
+      required: [true, 'Set phone number for contact'],
     },
     favorite: {
       type: Boolean,
