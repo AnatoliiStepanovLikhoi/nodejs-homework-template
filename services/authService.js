@@ -1,5 +1,5 @@
 const User = require('../models/users/userSchema');
-const { NotAuthorized } = require('../helpers/appError');
+const { AppError, NotAuthorized } = require('../helpers/appError');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { findByIdUserModel, updateUserModel } = require('../models/users/users');
@@ -12,7 +12,7 @@ async function login(email, password) {
   }
 
   if (!(await bcrypt.compare(password, user.password))) {
-    throw new NotAuthorized('Not authorized');
+    throw new AppError(400, 'Not authorized');
   }
 
   user.password = undefined;

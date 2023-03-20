@@ -1,10 +1,13 @@
 const Contact = require('../models/contacts/contactsSchema');
-const { listContactsModel } = require('../models/contacts/contacts');
+const {
+  listContactsModel,
+  getContactByIdModel,
+} = require('../models/contacts/contacts');
 
 async function listContacts(req, res) {
   const { _id: owner } = req.user;
 
-  const { page = 1, limit = 5, favorite = null } = req.query;
+  const { page = 1, limit = 20, favorite = null } = req.query;
 
   const favoriteState = favorite === 'true' || favorite === 'false';
 
@@ -27,7 +30,7 @@ async function getContactById(req, res, next) {
   const { contactId } = req.params;
   const { _id: owner } = req.user;
 
-  const contact = await Contact.findById({ _id: contactId, owner });
+  const contact = await getContactByIdModel(contactId, owner);
 
   res.status(200).json(contact);
 }

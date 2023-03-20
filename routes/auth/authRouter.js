@@ -18,7 +18,8 @@ router.post(
   addUserValidation,
   asyncWrapper(registrationController)
 );
-router.post('/login', asyncWrapper(loginController));
+router.post('/login', addUserValidation, asyncWrapper(loginController));
 router.post('/logout', authMiddleware, asyncWrapper(logoutController));
+router.post('/current');
 
 module.exports = router;

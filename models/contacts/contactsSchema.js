@@ -19,10 +19,6 @@ const contactsSchema = new Schema(
       type: String,
       required: [true, 'Set phone number for contact'],
     },
-    // userId: {
-    //   type: String,
-    //   required: true,
-    // },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: 'user',

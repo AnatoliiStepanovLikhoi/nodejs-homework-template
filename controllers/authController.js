@@ -1,6 +1,9 @@
 // const User = require('../models/users/userSchema');
 const { login, logout } = require('../services/authService');
-const { registrationUserModel } = require('../models/users/users');
+const {
+  registrationUserModel,
+  findByEmailModel,
+} = require('../models/users/users');
 // const { AppError } = require('../helpers/appError');
 // const bcrypt = require('bcrypt');
 // const jwt = require('jsonwebtoken');
@@ -26,7 +29,15 @@ const loginController = async (req, res) => {
 
   const token = await login(email, password);
 
-  res.status(200).json({ message: 'login successfully', token });
+  const user = await findByEmailModel(email);
+
+  res.status(200).json({
+    token,
+    user: {
+      email: user.email,
+      subscription: user.subscription,
+    },
+  });
 };
 
 const logoutController = async (req, res) => {

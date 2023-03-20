@@ -1,3 +1,4 @@
+const { AppError } = require('../../helpers/appError');
 const Contact = require('./contactsSchema');
 
 async function listContactsModel(owner, request) {
@@ -23,4 +24,17 @@ async function listContactsModel(owner, request) {
   return contactsData;
 }
 
-module.exports = { listContactsModel };
+async function getContactByIdModel(contactId, owner) {
+  const contact = await Contact.findOne({ _id: contactId, owner }).select({
+    __v: 0,
+    owner: 0,
+  });
+
+  if (!contact) {
+    throw new AppError(404, 'Not Found');
+  }
+
+  return contact;
+}
+
+module.exports = { listContactsModel, getContactByIdModel };
