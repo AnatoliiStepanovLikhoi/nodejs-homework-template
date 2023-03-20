@@ -4,7 +4,7 @@ const {
   updateContactStatusSchema,
 } = require('./schema');
 
-const AppError = require('../../helpers/appError');
+const { AppError } = require('../../helpers/appError');
 
 const addContactValidation = (req, res, next) => {
   const validationResult = addContactSchema.validate(req.body);

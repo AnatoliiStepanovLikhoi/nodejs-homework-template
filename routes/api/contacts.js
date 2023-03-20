@@ -13,12 +13,14 @@ const {
 const {
   updateContactValidation,
   updateContactStatusValidation,
-} = require('../../middlewars/joiValidation/validation');
+} = require('../../middlewars/contactsValidation/validation');
+const authMiddleware = require('../../middlewars/authMiddleware');
 
 const { checkUserData, validObjId } = require('../../middlewars/idValidation');
 
 const asyncWrapper = require('../../helpers/asyncWrapper');
 
+router.use(authMiddleware);
 router.use('/:contactId', asyncWrapper(validObjId));
 router.get('/', asyncWrapper(listContacts));
 router.get('/:contactId', asyncWrapper(getContactById));

@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema, SchemaTypes } = require('mongoose');
 
 const contactsSchema = new Schema(
   {
@@ -18,6 +18,14 @@ const contactsSchema = new Schema(
     phone: {
       type: String,
       required: [true, 'Set phone number for contact'],
+    },
+    // userId: {
+    //   type: String,
+    //   required: true,
+    // },
+    owner: {
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
     },
     favorite: {
       type: Boolean,
