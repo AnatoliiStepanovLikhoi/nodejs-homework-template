@@ -49,8 +49,15 @@ const logoutController = async (req, res) => {
   res.status(204).json({});
 };
 
+const currentUserController = async (req, res) => {
+  const { email, subscription } = req.user;
+
+  res.status(200).json({ user: { email, subscription } });
+};
+
 module.exports = {
   registrationController,
   loginController,
   logoutController,
+  currentUserController,
 };
