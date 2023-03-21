@@ -19,10 +19,6 @@ async function listContacts(req, res) {
     favorite: findFavoriteState,
   });
 
-  // console.log(req.user);
-
-  // const { skip = 0, limit = 5 } = req.query;
-
   res.status(200).json(contactsData);
 }
 
@@ -37,7 +33,6 @@ async function getContactById(req, res, next) {
 
 async function addContact(req, res) {
   req.body.owner = req.user._id;
-  // console.log(req.body);
 
   const newContactData = await Contact.create(req.body);
 

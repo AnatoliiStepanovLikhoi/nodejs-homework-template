@@ -6,6 +6,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, 'Set password for user'],
+      minlength: 7,
       select: false,
     },
     email: {
@@ -26,11 +27,13 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre('save', async function () {
-  if (this.isNew) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
-  //! TODO if PW changed
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  const salt = await bcrypt.genSalt(10);
+
+  this.password = await bcrypt.hash(this.password, salt);
+
+  next();
 });
 
 const User = model('users', userSchema);

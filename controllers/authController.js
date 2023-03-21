@@ -1,12 +1,11 @@
-// const User = require('../models/users/userSchema');
 const { login, logout } = require('../services/authService');
 const {
   registrationUserModel,
   findByEmailModel,
+  updateUserModel,
+  findByIdUserModel,
 } = require('../models/users/users');
-// const { AppError } = require('../helpers/appError');
-// const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+const { NotAuthorized } = require('../helpers/appError');
 
 const registrationController = async (req, res) => {
   try {
@@ -41,7 +40,6 @@ const loginController = async (req, res) => {
 };
 
 const logoutController = async (req, res) => {
-  console.log(req.body);
   const { _id } = req.user;
 
   await logout(_id);
@@ -55,9 +53,28 @@ const currentUserController = async (req, res) => {
   res.status(200).json({ user: { email, subscription } });
 };
 
+const updateUserStatusController = async (req, res) => {
+  const { _id } = req.user;
+
+  const user = await findByIdUserModel(_id);
+
+  if (!user) {
+    throw new NotAuthorized('Not authorized');
+  }
+
+  await updateUserModel(user, req.body);
+
+  console.log(req.body);
+
+  res
+    .status(200)
+    .json({ email: user.email, subscription: req.body.subscription });
+};
+
 module.exports = {
   registrationController,
   loginController,
   logoutController,
   currentUserController,
+  updateUserStatusController,
 };

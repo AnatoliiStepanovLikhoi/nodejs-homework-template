@@ -1,7 +1,6 @@
 const { NotAuthorized } = require('../helpers/appError');
 const jwt = require('jsonwebtoken');
 const { findByIdUserModel } = require('../models/users/users');
-// const asyncWrapper = require('../helpers/asyncWrapper');
 
 const authMiddleware = async (req, res, next) => {
   try {

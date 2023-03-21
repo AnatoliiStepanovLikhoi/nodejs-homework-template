@@ -12,6 +12,7 @@ const {
   loginController,
   logoutController,
   currentUserController,
+  updateUserStatusController,
 } = require('../../controllers/authController');
 
 router.post(
@@ -22,8 +23,12 @@ router.post(
 router.post('/login', addUserValidation, asyncWrapper(loginController));
 router.post('/logout', authMiddleware, asyncWrapper(logoutController));
 
-//! Current route & PATCH subsctiption
 router.get('/current', authMiddleware, asyncWrapper(currentUserController));
-router.patch('/');
+router.patch(
+  '/',
+  authMiddleware,
+  addUserValidation,
+  asyncWrapper(updateUserStatusController)
+);
 
 module.exports = router;
