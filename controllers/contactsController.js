@@ -7,7 +7,9 @@ const {
 async function listContacts(req, res) {
   const { _id: owner } = req.user;
 
-  const { page = 1, limit = 20, favorite = null } = req.query;
+  let { page = 1, limit = 20, favorite = null } = req.query;
+
+  limit = parseInt(limit) > 20 ? 20 : parseInt(limit);
 
   const favoriteState = favorite === 'true' || favorite === 'false';
 
