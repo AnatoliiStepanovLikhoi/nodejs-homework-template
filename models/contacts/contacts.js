@@ -10,10 +10,15 @@ async function listContactsModel(owner, request) {
 
   if (typeof favorite === 'boolean') user.favorite = favorite;
 
-  const contactsData = await Contact.find(user, '', { skip, limit }).select({
-    __v: 0,
-    owner: 0,
-  });
+  const contactsData = await Contact.find(user, '', { skip, limit })
+    //   .populate(
+    //   'owner',
+    //   '_id email subscription'
+    // );
+    .select({
+      __v: 0,
+      owner: 0,
+    });
   // .sort({ favorite: -1 });
 
   return contactsData;

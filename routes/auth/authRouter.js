@@ -23,7 +23,7 @@ router.post(
 router.post('/login', addUserValidation, asyncWrapper(loginController));
 router.post('/logout', authMiddleware, asyncWrapper(logoutController));
 
-router.get('/current', authMiddleware, asyncWrapper(currentUserController));
+router.post('/current', authMiddleware, asyncWrapper(currentUserController));
 router.patch(
   '/',
   authMiddleware,
