@@ -8,19 +8,11 @@ const {
 const { NotAuthorized } = require('../helpers/appError');
 
 const registrationController = async (req, res) => {
-  try {
-    const newUser = await registrationUserModel(req.body);
+  const newUser = await registrationUserModel(req.body);
 
-    const { email, subscription } = newUser;
+  const { email, subscription } = newUser;
 
-    res.status(201).json({ user: { email, subscription } });
-  } catch (error) {
-    if (error.code === 11000) {
-      return res.status(409).json({ message: 'Email in use' });
-    }
-
-    res.status(400).json({ message: error.message });
-  }
+  res.status(201).json({ user: { email, subscription } });
 };
 
 const loginController = async (req, res) => {

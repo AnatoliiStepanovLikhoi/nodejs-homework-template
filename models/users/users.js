@@ -1,11 +1,16 @@
 const User = require('./userSchema');
+const { AppError } = require('../../helpers/appError');
 
 async function registrationUserModel(data) {
+  const userEmailCheck = await User.findOne({ email: data.email });
+
+  if (userEmailCheck) {
+    throw new AppError(409, 'Email in use');
+  }
+
   const user = new User(data);
 
-  const result = await user.save();
-
-  return result;
+  return await user.save();
 }
 
 async function findByIdUserModel(_id) {
