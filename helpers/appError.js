@@ -6,4 +6,12 @@ class AppError extends Error {
   }
 }
 
-module.exports = AppError;
+class NotAuthorized extends Error {
+  constructor(message) {
+    super(message);
+
+    this.status = 401;
+  }
+}
+
+module.exports = { AppError, NotAuthorized };

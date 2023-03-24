@@ -1,6 +1,6 @@
-const AppError = require('../helpers/appError');
-const { addContactSchema } = require('./joiValidation/schema');
-const Contact = require('../models/contactsSchema');
+const { AppError } = require('../helpers/appError');
+const { addContactSchema } = require('./contactsValidation/schema');
+const Contact = require('../models/contacts/contactsSchema');
 const {
   Types: { ObjectId },
 } = require('mongoose');
