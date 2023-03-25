@@ -1,5 +1,6 @@
 const { model, Schema } = require('mongoose');
 const bcrypt = require('bcrypt');
+const gravatar = require('gravatar');
 
 const userSchema = new Schema(
   {
@@ -20,6 +21,7 @@ const userSchema = new Schema(
       default: 'starter',
     },
     token: String,
+    avatarURL: String,
   },
   {
     versionKey: false,
@@ -28,6 +30,14 @@ const userSchema = new Schema(
 );
 
 userSchema.pre('save', async function (next) {
+  if (this.isNew) {
+    this.avatarURL = gravatar.url(this.email, {
+      protocol: 'http',
+      s: '250',
+      d: 'retro',
+    });
+  }
+
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
 
@@ -35,6 +45,14 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
+// userSchema.pre('save', async function () {
+//   this.avatarURL = gravatar.url(this.email, {
+//     protocol: 'http',
+//     s: '250',
+//     d: 'retro',
+//   });
+// });
 
 const User = model('users', userSchema);
 
