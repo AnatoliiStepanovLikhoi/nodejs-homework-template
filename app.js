@@ -1,9 +1,10 @@
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
+
 const dotenv = require('dotenv');
-// const mongoose = require('mongoose');
 dotenv.config({ path: './.env' });
+
 const connectMongo = require('./db/connections');
 
 const contactsRouter = require('./routes/api/contacts');
@@ -17,11 +18,9 @@ app.use(logger(formatsLogger));
 
 const MONGO_URL = process.env.MONGO_URL;
 
-async function serverStart(connectionUrl) {
-  await connectMongo(connectionUrl);
-}
-
-serverStart(MONGO_URL);
+(async function serverStart() {
+  await connectMongo(MONGO_URL);
+})();
 
 app.use(cors());
 

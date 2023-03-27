@@ -81,7 +81,6 @@ const updateAvatarController = async (req, res) => {
     const jimpAvatar = await jimp.read(tempUpload);
 
     await jimpAvatar
-      // .autocrop()
       .resize(250, 250, jimp.VERTICAL_ALIGN_MIDDLE)
       .quality(85)
       .writeAsync(finalAvatarPath);

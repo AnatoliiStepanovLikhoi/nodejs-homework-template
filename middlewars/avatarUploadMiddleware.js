@@ -25,8 +25,6 @@ const multerStorage = multer.diskStorage({
 });
 
 const multerFilter = (req, file, cb) => {
-  //   const [, ext] = file.originalname.split('.');
-
   if (file.mimetype.startsWith('image')) {
     cb(null, true);
   } else {
