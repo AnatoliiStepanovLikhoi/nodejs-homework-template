@@ -4,6 +4,7 @@ const router = express.Router();
 const asyncWrapper = require('../../helpers/asyncWrapper');
 
 const authMiddleware = require('../../middlewars/authMiddleware');
+const uploadUserPhoto = require('../../middlewars/avatarUploadMiddleware');
 
 const addUserValidation = require('../../middlewars/usersValidation/validation');
 
@@ -13,6 +14,7 @@ const {
   logoutController,
   currentUserController,
   updateUserStatusController,
+  updateAvatarController,
 } = require('../../controllers/authController');
 
 router.post(
@@ -29,6 +31,12 @@ router.patch(
   authMiddleware,
   addUserValidation,
   asyncWrapper(updateUserStatusController)
+);
+router.patch(
+  '/avatars',
+  authMiddleware,
+  uploadUserPhoto,
+  asyncWrapper(updateAvatarController)
 );
 
 module.exports = router;
