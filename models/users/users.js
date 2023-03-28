@@ -26,7 +26,8 @@ async function findByEmailModel(email) {
 }
 
 async function updateUserModel(user, body) {
-  await user.updateOne(body);
+  // console.log(user._id);
+  await User.findByIdAndUpdate(user._id, body);
 }
 
 module.exports = {
