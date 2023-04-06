@@ -11,6 +11,10 @@ async function login(email, password) {
     throw new NotAuthorized('Wrong email or password');
   }
 
+  if (!user.verify) {
+    throw new NotAuthorized('User must verify email');
+  }
+
   if (!(await bcrypt.compare(password, user.password))) {
     throw new AppError(400, 'Not authorized');
   }

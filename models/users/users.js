@@ -25,6 +25,12 @@ async function findByEmailModel(email) {
   return user;
 }
 
+async function findByParamModel(param) {
+  const user = await User.findOne({ param });
+
+  return user;
+}
+
 async function updateUserModel(user, body) {
   // console.log(user._id);
   await User.findByIdAndUpdate(user._id, body);
@@ -35,4 +41,5 @@ module.exports = {
   findByIdUserModel,
   findByEmailModel,
   updateUserModel,
+  findByParamModel,
 };
