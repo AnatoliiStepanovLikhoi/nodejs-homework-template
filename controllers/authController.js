@@ -22,6 +22,8 @@ const registrationController = async (req, res) => {
   res.status(201).json({ user: { email, subscription } });
 };
 
+const verifyUserEmailController = async (req, res) => {};
+
 const loginController = async (req, res) => {
   const { email, password } = req.body;
 
@@ -106,4 +108,5 @@ module.exports = {
   currentUserController,
   updateUserStatusController,
   updateAvatarController,
+  verifyUserEmailController,
 };

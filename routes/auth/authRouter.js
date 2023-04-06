@@ -15,12 +15,17 @@ const {
   currentUserController,
   updateUserStatusController,
   updateAvatarController,
+  verifyUserEmailController,
 } = require('../../controllers/authController');
 
 router.post(
   '/register',
   addUserValidation,
   asyncWrapper(registrationController)
+);
+router.get(
+  '/verify/:verificationToken',
+  asyncWrapper(verifyUserEmailController)
 );
 router.post('/login', addUserValidation, asyncWrapper(loginController));
 router.post('/logout', authMiddleware, asyncWrapper(logoutController));
