@@ -26,7 +26,7 @@ async function findByEmailModel(email) {
 }
 
 async function findByParamModel(param) {
-  const user = await User.findOne({ param });
+  const user = await User.findOne(param);
 
   return user;
 }
