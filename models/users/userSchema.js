@@ -1,6 +1,7 @@
 const { model, Schema } = require('mongoose');
 const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
+const sendUserVerificationEmail = require('../../services/sendEmailService');
 
 const userSchema = new Schema(
   {
@@ -21,6 +22,14 @@ const userSchema = new Schema(
       default: 'starter',
     },
     token: String,
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
     avatarURL: {
       type: String,
       // required: true,
@@ -47,6 +56,10 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 
   next();
+});
+
+userSchema.post('save', async function () {
+  await sendUserVerificationEmail(this.email, this.verificationToken);
 });
 
 // userSchema.pre('save', async function () {

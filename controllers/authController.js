@@ -1,9 +1,11 @@
 const { login, logout } = require('../services/authService');
+const sendUserVerificationEmail = require('../services/sendEmailService');
 const {
   registrationUserModel,
   findByEmailModel,
   updateUserModel,
   findByIdUserModel,
+  findByParamModel,
 } = require('../models/users/users');
 const { NotAuthorized } = require('../helpers/appError');
 
@@ -20,6 +22,46 @@ const registrationController = async (req, res) => {
   const { email, subscription } = newUser;
 
   res.status(201).json({ user: { email, subscription } });
+};
+
+const verifyUserEmailController = async (req, res) => {
+  const { verificationToken } = req.params;
+
+  const user = await findByParamModel({ verificationToken });
+
+  if (!user) {
+    throw new AppError(404, 'User not found');
+  }
+
+  const { _id, verify } = user;
+
+  if (verify) {
+    throw new AppError(400, 'Verification has already been passed');
+  }
+
+  await updateUserModel(_id, { verify: true });
+
+  res.status(200).json({ message: 'Verification successful' });
+};
+
+const resendVerifyUserEmailController = async (req, res) => {
+  const { email } = req.body;
+
+  const user = await findByEmailModel(email);
+
+  if (!user) {
+    throw new AppError(400, 'User not found');
+  }
+
+  const { email: userEmail, verify, verificationToken } = user;
+
+  if (verify) {
+    throw new AppError(400, 'Verification has already been passed');
+  }
+
+  await sendUserVerificationEmail(userEmail, verificationToken);
+
+  res.status(200).json({ message: 'Verification email sent' });
 };
 
 const loginController = async (req, res) => {
@@ -106,4 +148,6 @@ module.exports = {
   currentUserController,
   updateUserStatusController,
   updateAvatarController,
+  verifyUserEmailController,
+  resendVerifyUserEmailController,
 };

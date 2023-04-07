@@ -18,9 +18,9 @@ app.use(logger(formatsLogger));
 
 const MONGO_URL = process.env.MONGO_URL;
 
-(async function serverStart() {
-  await connectMongo(MONGO_URL);
-})();
+(async function serverStart(connectionURL) {
+  await connectMongo(connectionURL);
+})(MONGO_URL);
 
 app.use(cors());
 
