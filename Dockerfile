@@ -1,8 +1,8 @@
-FROM node:18-alpine
+FROM node:16
 
 WORKDIR /contacts_app
 
-COPY .package*.json ./
+COPY ./package*.json ./
 
 RUN npm install
 
